@@ -5,10 +5,12 @@ class SliverHat extends StatelessWidget {
 
   @override
   Widget build(ctx) {
+    final double screenHeight = MediaQuery.of(ctx).size.height;
     return SliverAppBar(
       centerTitle: true,
       floating: true,
       pinned: true,
+      expandedHeight: screenHeight,
 
       flexibleSpace: FlexibleSpaceBar(
         centerTitle: true,
@@ -20,8 +22,8 @@ class SliverHat extends StatelessWidget {
             // color: Colors.white,
           ),
         ),
+        background: Container(),
       ),
-      expandedHeight: 200,
     );
   }
 }
