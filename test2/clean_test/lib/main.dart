@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'hat.dart';
 
 void main() {
   runApp(
@@ -6,30 +7,13 @@ void main() {
       home: Scaffold(
         body: CustomScrollView(
           slivers: [
-            SliverAppBar(
-              centerTitle: true,
-              floating: true,
-              pinned: true,
-
-              flexibleSpace: FlexibleSpaceBar(
-                centerTitle: true,
-                title: const Text(
-                  'Exchange rates',
-                  style: TextStyle(
-                    fontSize: 24,
-                    fontWeight: FontWeight.bold,
-                    // color: Colors.white,
-                  ),
-                ),
-              ),
-              expandedHeight: 200,
-            ),
+            SliverHat(),
 
             SliverToBoxAdapter(
               child: Column(
                 children: [
                   Padding(
-                    padding: EdgeInsets.all(100.0),
+                    padding: EdgeInsets.all(1000.0),
                     child: Title(
                       color: Colors.white,
                       child: Text('Currency converter'),
