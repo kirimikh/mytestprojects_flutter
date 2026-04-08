@@ -22,7 +22,7 @@ class SliverHat extends StatelessWidget {
             // color: Colors.white,
           ),
         ),
-        background: Container(),
+        background: Container(height: 1300000, alignment: Alignment.center),
       ),
     );
   }

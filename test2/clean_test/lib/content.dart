@@ -17,6 +17,7 @@ class SliverContent extends StatelessWidget {
           ),
 
           Padding(padding: EdgeInsets.all(12.0), child: TextField()),
+          Padding(padding: EdgeInsets.all(12.0), child: Container()),
         ],
       ),
     );
