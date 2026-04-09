@@ -3,6 +3,8 @@ import 'package:http/http.dart' as http;
 import 'currency.dart';
 
 Future<List<Currency>> getRates() async {
+  // await Future.delayed(Duration(seconds: 5));
+
   final url = Uri.parse('https://api.nbrb.by/exrates/rates?periodicity=0');
 
   final responce = await http.get(url);
