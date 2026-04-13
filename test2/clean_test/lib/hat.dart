@@ -9,19 +9,19 @@ class SliverHat extends StatelessWidget {
     return SliverAppBar(
       centerTitle: true,
       pinned: true,
+      floating: false,
       expandedHeight: screenHeight,
-
       flexibleSpace: FlexibleSpaceBar(
-        background: Center(
-          child: Text(
-            'Exchange rates',
-            style: const TextStyle(
-              fontSize: 32,
-              fontWeight: FontWeight.bold,
-              color: Colors.black,
-            ),
+        centerTitle: true,
+        title: const Text(
+          'Exchange rates',
+          style: TextStyle(
+            fontSize: 24,
+            fontWeight: FontWeight.bold,
+            color: Colors.black,
           ),
         ),
+        background: Container(color: Colors.white),
       ),
     );
   }

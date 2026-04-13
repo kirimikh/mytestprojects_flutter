@@ -12,8 +12,22 @@ class SliverContent extends StatefulWidget {
 class _SliverContentState extends State<SliverContent> {
   final _controllerA = TextEditingController();
   final _controllerB = TextEditingController();
+  final _controllerC = TextEditingController();
+  final _controllerD = TextEditingController();
+  final _controllerE = TextEditingController();
+  final _controllerF = TextEditingController();
+  final _controllerG = TextEditingController();
+  final _controllerH = TextEditingController();
+  // final _controllerI = TextEditingController();
   Currency? _selectedA;
   Currency? _selectedB;
+  Currency? _selectedC;
+  Currency? _selectedD;
+  Currency? _selectedE;
+  Currency? _selectedF;
+  Currency? _selectedG;
+  Currency? _selectedH;
+  // Currency? _selectedI;
   double result = 0;
 
   List<Currency>? _currencies;
@@ -37,7 +51,7 @@ class _SliverContentState extends State<SliverContent> {
     });
   }
 
-  void _showCurrencyPicker(bool isFirstBtn) {
+  void _showCurrencyPicker(String selectedField) {
     showModalBottomSheet(
       context: context,
       builder: (context) {
@@ -49,12 +63,70 @@ class _SliverContentState extends State<SliverContent> {
               title: Text(curr.abbreviation),
               onTap: () {
                 setState(() {
-                  if (isFirstBtn) {
+                  if (selectedField == "A") {
                     _selectedA = curr;
-                    _calculateConversion(fromTop: false);
-                  } else {
+                    _calculateConversion(
+                      _controllerB,
+                      _controllerA,
+                      _selectedB,
+                      _selectedA,
+                    );
+                  } else if (selectedField == "B") {
                     _selectedB = curr;
-                    _calculateConversion(fromTop: true);
+                    _calculateConversion(
+                      _controllerA,
+                      _controllerB,
+                      _selectedA,
+                      _selectedB,
+                    );
+                  } else if (selectedField == "C") {
+                    _selectedC = curr;
+                    _calculateConversion(
+                      _controllerD,
+                      _controllerC,
+                      _selectedD,
+                      _selectedC,
+                    );
+                  } else if (selectedField == "D") {
+                    _selectedD = curr;
+                    _calculateConversion(
+                      _controllerC,
+                      _controllerD,
+                      _selectedC,
+                      _selectedD,
+                    );
+                  } else if (selectedField == "E") {
+                    _selectedE = curr;
+                    _calculateConversion(
+                      _controllerF,
+                      _controllerE,
+                      _selectedF,
+                      _selectedE,
+                    );
+                  } else if (selectedField == "F") {
+                    _selectedF = curr;
+                    _calculateConversion(
+                      _controllerE,
+                      _controllerF,
+                      _selectedE,
+                      _selectedF,
+                    );
+                  } else if (selectedField == "G") {
+                    _selectedG = curr;
+                    _calculateConversion(
+                      _controllerH,
+                      _controllerG,
+                      _selectedH,
+                      _selectedG,
+                    );
+                  } else if (selectedField == "H") {
+                    _selectedH = curr;
+                    _calculateConversion(
+                      _controllerG,
+                      _controllerH,
+                      _selectedG,
+                      _selectedH,
+                    );
                   }
                 });
                 Navigator.pop(context);
@@ -66,27 +138,29 @@ class _SliverContentState extends State<SliverContent> {
     );
   }
 
-  void _calculateConversion({bool fromTop = true}) {
-    final leader = fromTop ? _controllerA : _controllerB;
-    final follower = fromTop ? _controllerB : _controllerA;
-
-    final currencyFrom = fromTop ? _selectedA : _selectedB;
-    final currencyTo = fromTop ? _selectedB : _selectedA;
-
-    if (currencyFrom == null || currencyTo == null || leader.text.isEmpty) {
-      follower.clear();
+  void _calculateConversion(
+    leaderController,
+    followerController,
+    currencyFrom,
+    currencyTo,
+  ) {
+    if (currencyFrom == null ||
+        currencyTo == null ||
+        leaderController.text.isEmpty) {
+      followerController.clear();
       return;
     }
 
-    double input = double.tryParse(leader.text.replaceAll(',', '.')) ?? 0;
+    double input =
+        double.tryParse(leaderController.text.replaceAll(',', '.')) ?? 0;
 
     double result =
         (input * currencyFrom.rate / currencyFrom.scale) /
         (currencyTo.rate / currencyTo.scale);
 
     String newText = result.toStringAsFixed(2);
-    if (follower.text != newText) {
-      follower.text = newText;
+    if (followerController.text != newText) {
+      followerController.text = newText;
     }
   }
 
@@ -120,7 +194,7 @@ class _SliverContentState extends State<SliverContent> {
                   SizedBox(
                     width: 80,
                     child: ElevatedButton(
-                      onPressed: () => _showCurrencyPicker(true),
+                      onPressed: () => _showCurrencyPicker("A"),
                       child: Text(_selectedA?.abbreviation ?? 'Choose'),
                     ),
                   ),
@@ -133,7 +207,12 @@ class _SliverContentState extends State<SliverContent> {
                       keyboardType: TextInputType.numberWithOptions(
                         decimal: true,
                       ),
-                      onChanged: (val) => _calculateConversion(fromTop: true),
+                      onChanged: (val) => _calculateConversion(
+                        _controllerA,
+                        _controllerB,
+                        _selectedA,
+                        _selectedB,
+                      ),
                       decoration: InputDecoration(
                         labelText: 'From',
                         border: OutlineInputBorder(),
@@ -141,6 +220,12 @@ class _SliverContentState extends State<SliverContent> {
                           onPressed: () => {
                             _controllerA.clear(),
                             _controllerB.clear(),
+                            // _controllerC.clear(),
+                            // _controllerD.clear(),
+                            // _controllerE.clear(),
+                            // _controllerF.clear(),
+                            // _controllerG.clear(),
+                            // _controllerH.clear(),
                           },
                           icon: Icon(Icons.clear),
                         ),
@@ -157,7 +242,7 @@ class _SliverContentState extends State<SliverContent> {
                   SizedBox(
                     width: 80,
                     child: ElevatedButton(
-                      onPressed: () => _showCurrencyPicker(false),
+                      onPressed: () => _showCurrencyPicker("B"),
                       child: Text(_selectedB?.abbreviation ?? 'Choose'),
                     ),
                   ),
@@ -170,7 +255,12 @@ class _SliverContentState extends State<SliverContent> {
                       keyboardType: TextInputType.numberWithOptions(
                         decimal: true,
                       ),
-                      onChanged: (val) => _calculateConversion(fromTop: false),
+                      onChanged: (val) => _calculateConversion(
+                        _controllerB,
+                        _controllerA,
+                        _selectedB,
+                        _selectedA,
+                      ),
                       decoration: InputDecoration(
                         labelText: 'To',
                         border: OutlineInputBorder(),
@@ -178,6 +268,300 @@ class _SliverContentState extends State<SliverContent> {
                           onPressed: () => {
                             _controllerA.clear(),
                             _controllerB.clear(),
+                            // _controllerC.clear(),
+                            // _controllerD.clear(),
+                            // _controllerE.clear(),
+                            // _controllerF.clear(),
+                            // _controllerG.clear(),
+                            // _controllerH.clear(),
+                          },
+                          icon: Icon(Icons.clear),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+
+              const SizedBox(height: 16),
+
+              Row(
+                children: [
+                  SizedBox(
+                    width: 80,
+                    child: ElevatedButton(
+                      onPressed: () => _showCurrencyPicker("C"),
+                      child: Text(_selectedC?.abbreviation ?? 'Choose'),
+                    ),
+                  ),
+
+                  const SizedBox(width: 12),
+
+                  Expanded(
+                    child: TextField(
+                      controller: _controllerC,
+                      keyboardType: TextInputType.numberWithOptions(
+                        decimal: true,
+                      ),
+                      onChanged: (val) => _calculateConversion(
+                        _controllerC,
+                        _controllerD,
+                        _selectedC,
+                        _selectedD,
+                      ),
+                      decoration: InputDecoration(
+                        labelText: 'To',
+                        border: OutlineInputBorder(),
+                        suffixIcon: IconButton(
+                          onPressed: () => {
+                            // _controllerA.clear(),
+                            // _controllerB.clear(),
+                            _controllerC.clear(),
+                            _controllerD.clear(),
+                            // _controllerE.clear(),
+                            // _controllerF.clear(),
+                            // _controllerG.clear(),
+                            // _controllerH.clear(),
+                          },
+                          icon: Icon(Icons.clear),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+
+              const SizedBox(height: 16),
+
+              Row(
+                children: [
+                  SizedBox(
+                    width: 80,
+                    child: ElevatedButton(
+                      onPressed: () => _showCurrencyPicker("D"),
+                      child: Text(_selectedD?.abbreviation ?? 'Choose'),
+                    ),
+                  ),
+
+                  const SizedBox(width: 12),
+
+                  Expanded(
+                    child: TextField(
+                      controller: _controllerD,
+                      keyboardType: TextInputType.numberWithOptions(
+                        decimal: true,
+                      ),
+                      onChanged: (val) => _calculateConversion(
+                        _controllerD,
+                        _controllerC,
+                        _selectedD,
+                        _selectedC,
+                      ),
+                      decoration: InputDecoration(
+                        labelText: 'To',
+                        border: OutlineInputBorder(),
+                        suffixIcon: IconButton(
+                          onPressed: () => {
+                            // _controllerA.clear(),
+                            // _controllerB.clear(),
+                            _controllerC.clear(),
+                            _controllerD.clear(),
+                            // _controllerE.clear(),
+                            // _controllerF.clear(),
+                            // _controllerG.clear(),
+                            // _controllerH.clear(),
+                          },
+                          icon: Icon(Icons.clear),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+
+              const SizedBox(height: 16),
+
+              Row(
+                children: [
+                  SizedBox(
+                    width: 80,
+                    child: ElevatedButton(
+                      onPressed: () => _showCurrencyPicker("E"),
+                      child: Text(_selectedE?.abbreviation ?? 'Choose'),
+                    ),
+                  ),
+
+                  const SizedBox(width: 12),
+
+                  Expanded(
+                    child: TextField(
+                      controller: _controllerE,
+                      keyboardType: TextInputType.numberWithOptions(
+                        decimal: true,
+                      ),
+                      onChanged: (val) => _calculateConversion(
+                        _controllerE,
+                        _controllerF,
+                        _selectedE,
+                        _selectedF,
+                      ),
+                      decoration: InputDecoration(
+                        labelText: 'To',
+                        border: OutlineInputBorder(),
+                        suffixIcon: IconButton(
+                          onPressed: () => {
+                            // _controllerA.clear(),
+                            // _controllerB.clear(),
+                            // _controllerC.clear(),
+                            // _controllerD.clear(),
+                            _controllerE.clear(),
+                            _controllerF.clear(),
+                            // _controllerG.clear(),
+                            // _controllerH.clear(),
+                          },
+                          icon: Icon(Icons.clear),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+
+              const SizedBox(height: 16),
+
+              Row(
+                children: [
+                  SizedBox(
+                    width: 80,
+                    child: ElevatedButton(
+                      onPressed: () => _showCurrencyPicker("F"),
+                      child: Text(_selectedF?.abbreviation ?? 'Choose'),
+                    ),
+                  ),
+
+                  const SizedBox(width: 12),
+
+                  Expanded(
+                    child: TextField(
+                      controller: _controllerF,
+                      keyboardType: TextInputType.numberWithOptions(
+                        decimal: true,
+                      ),
+                      onChanged: (val) => _calculateConversion(
+                        _controllerF,
+                        _controllerE,
+                        _selectedF,
+                        _selectedE,
+                      ),
+                      decoration: InputDecoration(
+                        labelText: 'To',
+                        border: OutlineInputBorder(),
+                        suffixIcon: IconButton(
+                          onPressed: () => {
+                            // _controllerA.clear(),
+                            // _controllerB.clear(),
+                            // _controllerC.clear(),
+                            // _controllerD.clear(),
+                            _controllerE.clear(),
+                            _controllerF.clear(),
+                            // _controllerG.clear(),
+                            // _controllerH.clear(),
+                          },
+                          icon: Icon(Icons.clear),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+
+              const SizedBox(height: 16),
+
+              Row(
+                children: [
+                  SizedBox(
+                    width: 80,
+                    child: ElevatedButton(
+                      onPressed: () => _showCurrencyPicker("G"),
+                      child: Text(_selectedG?.abbreviation ?? 'Choose'),
+                    ),
+                  ),
+
+                  const SizedBox(width: 12),
+
+                  Expanded(
+                    child: TextField(
+                      controller: _controllerG,
+                      keyboardType: TextInputType.numberWithOptions(
+                        decimal: true,
+                      ),
+                      onChanged: (val) => _calculateConversion(
+                        _controllerG,
+                        _controllerH,
+                        _selectedG,
+                        _selectedH,
+                      ),
+                      decoration: InputDecoration(
+                        labelText: 'To',
+                        border: OutlineInputBorder(),
+                        suffixIcon: IconButton(
+                          onPressed: () => {
+                            // _controllerA.clear(),
+                            // _controllerB.clear(),
+                            // _controllerC.clear(),
+                            // _controllerD.clear(),
+                            // _controllerE.clear(),
+                            // _controllerF.clear(),
+                            _controllerG.clear(),
+                            _controllerH.clear(),
+                          },
+                          icon: Icon(Icons.clear),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+
+              const SizedBox(height: 16),
+
+              Row(
+                children: [
+                  SizedBox(
+                    width: 80,
+                    child: ElevatedButton(
+                      onPressed: () => _showCurrencyPicker("H"),
+                      child: Text(_selectedH?.abbreviation ?? 'Choose'),
+                    ),
+                  ),
+
+                  const SizedBox(width: 12),
+
+                  Expanded(
+                    child: TextField(
+                      controller: _controllerH,
+                      keyboardType: TextInputType.numberWithOptions(
+                        decimal: true,
+                      ),
+                      onChanged: (val) => _calculateConversion(
+                        _controllerH,
+                        _controllerG,
+                        _selectedH,
+                        _selectedG,
+                      ),
+                      decoration: InputDecoration(
+                        labelText: 'To',
+                        border: OutlineInputBorder(),
+                        suffixIcon: IconButton(
+                          onPressed: () => {
+                            // _controllerA.clear(),
+                            // _controllerB.clear(),
+                            // _controllerC.clear(),
+                            // _controllerD.clear(),
+                            // _controllerE.clear(),
+                            // _controllerF.clear(),
+                            _controllerG.clear(),
+                            _controllerH.clear(),
                           },
                           icon: Icon(Icons.clear),
                         ),
