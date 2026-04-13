@@ -51,10 +51,11 @@ class _SliverContentState extends State<SliverContent> {
                 setState(() {
                   if (isFirstBtn) {
                     _selectedA = curr;
+                    _calculateConversion(fromTop: false);
                   } else {
                     _selectedB = curr;
+                    _calculateConversion(fromTop: true);
                   }
-                  _calculateConversion();
                 });
                 Navigator.pop(context);
               },
@@ -65,24 +66,34 @@ class _SliverContentState extends State<SliverContent> {
     );
   }
 
-  void _calculateConversion() {
-    if (_selectedA == null || _selectedB == null || _controllerA.text.isEmpty) {
+  void _calculateConversion({bool fromTop = true}) {
+    final leader = fromTop ? _controllerA : _controllerB;
+    final follower = fromTop ? _controllerB : _controllerA;
+
+    final currencyFrom = fromTop ? _selectedA : _selectedB;
+    final currencyTo = fromTop ? _selectedB : _selectedA;
+
+    if (currencyFrom == null || currencyTo == null || leader.text.isEmpty) {
+      follower.clear();
       return;
     }
 
-    double input = double.tryParse(_controllerA.text) ?? 0;
+    double input = double.tryParse(leader.text.replaceAll(',', '.')) ?? 0;
 
-    double result = input * (_selectedA!.rate / _selectedB!.rate);
+    double result =
+        (input * currencyFrom.rate / currencyFrom.scale) /
+        (currencyTo.rate / currencyTo.scale);
 
-    _controllerB.text = result.toStringAsFixed(2);
+    String newText = result.toStringAsFixed(2);
+    if (follower.text != newText) {
+      follower.text = newText;
+    }
   }
 
   @override
   void initState() {
     super.initState();
     _loadData();
-
-    _controllerA.addListener(_calculateConversion);
   }
 
   @override
@@ -119,9 +130,20 @@ class _SliverContentState extends State<SliverContent> {
                   Expanded(
                     child: TextField(
                       controller: _controllerA,
+                      keyboardType: TextInputType.numberWithOptions(
+                        decimal: true,
+                      ),
+                      onChanged: (val) => _calculateConversion(fromTop: true),
                       decoration: InputDecoration(
-                        labelText: 'From USD',
+                        labelText: 'From',
                         border: OutlineInputBorder(),
+                        suffixIcon: IconButton(
+                          onPressed: () => {
+                            _controllerA.clear(),
+                            _controllerB.clear(),
+                          },
+                          icon: Icon(Icons.clear),
+                        ),
                       ),
                     ),
                   ),
@@ -145,9 +167,20 @@ class _SliverContentState extends State<SliverContent> {
                   Expanded(
                     child: TextField(
                       controller: _controllerB,
+                      keyboardType: TextInputType.numberWithOptions(
+                        decimal: true,
+                      ),
+                      onChanged: (val) => _calculateConversion(fromTop: false),
                       decoration: InputDecoration(
-                        labelText: 'To BYN',
+                        labelText: 'To',
                         border: OutlineInputBorder(),
+                        suffixIcon: IconButton(
+                          onPressed: () => {
+                            _controllerA.clear(),
+                            _controllerB.clear(),
+                          },
+                          icon: Icon(Icons.clear),
+                        ),
                       ),
                     ),
                   ),

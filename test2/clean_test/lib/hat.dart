@@ -8,21 +8,20 @@ class SliverHat extends StatelessWidget {
     final double screenHeight = MediaQuery.of(ctx).size.height;
     return SliverAppBar(
       centerTitle: true,
-      floating: true,
       pinned: true,
       expandedHeight: screenHeight,
 
       flexibleSpace: FlexibleSpaceBar(
-        centerTitle: true,
-        title: const Text(
-          'Exchange rates',
-          style: TextStyle(
-            fontSize: 24,
-            fontWeight: FontWeight.bold,
-            // color: Colors.white,
+        background: Center(
+          child: Text(
+            'Exchange rates',
+            style: const TextStyle(
+              fontSize: 32,
+              fontWeight: FontWeight.bold,
+              color: Colors.black,
+            ),
           ),
         ),
-        background: Container(height: 1300000, alignment: Alignment.center),
       ),
     );
   }
